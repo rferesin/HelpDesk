@@ -1,0 +1,34 @@
+<div class="auth-wrap d-flex align-items-center justify-content-center p-3">
+  <div class="card" style="width: 100%; max-width: 460px;">
+    <div class="card-body p-4">
+      <h1 class="h4 mb-1">HelpDesk</h1>
+      <p class="text-muted mb-4">Sistema corporativo de chamados</p>
+
+      @if (error) {
+        <div class="alert alert-danger py-2">{{ error }}</div>
+      }
+
+      <form (ngSubmit)="submit()">
+        <div class="mb-3">
+          <label class="form-label">E-mail</label>
+          <input class="form-control" type="email" name="email" [(ngModel)]="email" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Senha</label>
+          <input class="form-control" type="password" name="password" [(ngModel)]="password" required>
+        </div>
+        <button class="btn btn-primary w-100" type="submit" [disabled]="loading">
+          {{ loading ? 'Entrando...' : 'Entrar' }}
+        </button>
+      </form>
+
+      <hr>
+      <p class="small text-muted mb-2">Acessos de demonstracao</p>
+      <div class="d-flex flex-wrap gap-2">
+        <button class="btn btn-outline-secondary btn-sm" type="button" (click)="fill('admin')">Admin</button>
+        <button class="btn btn-outline-secondary btn-sm" type="button" (click)="fill('atendente')">Atendente</button>
+        <button class="btn btn-outline-secondary btn-sm" type="button" (click)="fill('cliente')">Cliente</button>
+      </div>
+    </div>
+  </div>
+</div>

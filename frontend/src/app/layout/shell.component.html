@@ -1,0 +1,30 @@
+<nav class="navbar navbar-dark" style="background:#0f2744;">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-semibold" routerLink="/dashboard">HelpDesk Corporativo</a>
+    <div class="d-flex align-items-center gap-3 text-white-50">
+      @if (auth.currentUser(); as user) {
+        <span>{{ user.name }} · {{ roleLabel[user.role] }}</span>
+      }
+      <button class="btn btn-outline-light btn-sm" type="button" (click)="auth.logout()">Sair</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <aside class="col-12 col-md-3 col-lg-2 sidebar py-3">
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/tickets" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Chamados</a>
+      @if (auth.hasRole('CLIENTE', 'ADMIN')) {
+        <a routerLink="/tickets/new" routerLinkActive="active">Novo chamado</a>
+      }
+      @if (auth.hasRole('ADMIN')) {
+        <a routerLink="/users" routerLinkActive="active">Usuarios</a>
+        <a routerLink="/admin" routerLinkActive="active">Administracao</a>
+      }
+    </aside>
+    <main class="col-12 col-md-9 col-lg-10 py-4">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

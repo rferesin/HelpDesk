@@ -1,0 +1,43 @@
+<div class="mb-3">
+  <a routerLink="/tickets">Voltar para chamados</a>
+</div>
+<div class="card" style="max-width: 760px;">
+  <div class="card-body">
+    <h1 class="h4 mb-3">Novo chamado</h1>
+    @if (error) {
+      <div class="alert alert-danger">{{ error }}</div>
+    }
+    <form (ngSubmit)="submit()">
+      <div class="mb-3">
+        <label class="form-label">Titulo</label>
+        <input class="form-control" name="title" [(ngModel)]="title" required minlength="5">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Descricao</label>
+        <textarea class="form-control" rows="5" name="description" [(ngModel)]="description" required minlength="10"></textarea>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Categoria</label>
+          <select class="form-select" name="categoryId" [(ngModel)]="categoryId" required>
+            @for (category of categories; track category.id) {
+              <option [ngValue]="category.id">{{ category.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Prioridade</label>
+          <select class="form-select" name="priority" [(ngModel)]="priority">
+            <option value="BAIXA">Baixa</option>
+            <option value="MEDIA">Media</option>
+            <option value="ALTA">Alta</option>
+            <option value="URGENTE">Urgente</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-primary" type="submit" [disabled]="loading">
+        {{ loading ? 'Salvando...' : 'Abrir chamado' }}
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<h1 class="h4 mb-3">Administracao</h1>
+<p class="text-muted">Gerencie categorias usadas na abertura de chamados.</p>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <h2 class="h6">Nova categoria</h2>
+    @if (error) {
+      <div class="alert alert-danger py-2">{{ error }}</div>
+    }
+    <form class="row g-2 align-items-end" (ngSubmit)="create()">
+      <div class="col-md-4">
+        <label class="form-label">Nome</label>
+        <input class="form-control" [(ngModel)]="name" name="name" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Descricao</label>
+        <input class="form-control" [(ngModel)]="description" name="description">
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary w-100" type="submit">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Descricao</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (category of categories; track category.id) {
+          <tr>
+            <td>{{ category.name }}</td>
+            <td>{{ category.description }}</td>
+            <td>{{ category.active ? 'Ativa' : 'Inativa' }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-secondary" type="button" (click)="toggle(category)">
+                {{ category.active ? 'Desativar' : 'Ativar' }}
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

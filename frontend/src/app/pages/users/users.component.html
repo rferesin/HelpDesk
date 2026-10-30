@@ -1,0 +1,66 @@
+<h1 class="h4 mb-3">Usuarios</h1>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <h2 class="h6">Novo usuario</h2>
+    @if (error) {
+      <div class="alert alert-danger py-2">{{ error }}</div>
+    }
+    <form class="row g-2 align-items-end" (ngSubmit)="create()">
+      <div class="col-md-3">
+        <label class="form-label">Nome</label>
+        <input class="form-control" [(ngModel)]="name" name="name" required>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">E-mail</label>
+        <input class="form-control" type="email" [(ngModel)]="email" name="email" required>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Senha</label>
+        <input class="form-control" type="password" [(ngModel)]="password" name="password" required minlength="6">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Perfil</label>
+        <select class="form-select" [(ngModel)]="role" name="role">
+          <option value="ADMIN">Administrador</option>
+          <option value="ATENDENTE">Atendente</option>
+          <option value="CLIENTE">Cliente</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary w-100" type="submit">Cadastrar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>E-mail</th>
+          <th>Perfil</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track user.id) {
+          <tr>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ roleLabel[user.role] }}</td>
+            <td>{{ user.active ? 'Ativo' : 'Inativo' }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-secondary" type="button" (click)="toggle(user)">
+                {{ user.active ? 'Desativar' : 'Ativar' }}
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

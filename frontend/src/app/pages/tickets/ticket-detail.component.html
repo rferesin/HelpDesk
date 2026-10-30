@@ -1,0 +1,112 @@
+<div class="mb-3">
+  <a routerLink="/tickets">Voltar para chamados</a>
+</div>
+
+@if (error) {
+  <div class="alert alert-danger">{{ error }}</div>
+}
+
+@if (ticket) {
+  <div class="d-flex justify-content-between align-items-start mb-3">
+    <div>
+      <h1 class="h4 mb-1">#{{ ticket.id }} {{ ticket.title }}</h1>
+      <span class="status-chip" [class]="statusClass(ticket.status)">{{ statusLabel[ticket.status] }}</span>
+      <span class="ms-2 text-muted">Prioridade: {{ priorityLabel[ticket.priority] }}</span>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-8">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h2 class="h6">Descricao</h2>
+          <p class="mb-0">{{ ticket.description }}</p>
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-header bg-white">Comentarios</div>
+        <div class="card-body">
+          @for (item of ticket.comments; track item.id) {
+            <div class="border-bottom pb-2 mb-2">
+              <div class="small text-muted">{{ item.authorName }} · {{ item.createdAt | date:'short' }}</div>
+              <div>{{ item.content }}</div>
+            </div>
+          } @empty {
+            <p class="text-muted">Nenhum comentario ainda.</p>
+          }
+          @if (ticket.status !== 'FECHADO') {
+            <form (ngSubmit)="addComment()">
+              <textarea class="form-control mb-2" rows="3" [(ngModel)]="comment" name="comment" placeholder="Escreva um comentario"></textarea>
+              <button class="btn btn-outline-primary btn-sm" type="submit">Comentar</button>
+            </form>
+          }
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bg-white">Anexos</div>
+        <div class="card-body">
+          <ul class="mb-3">
+            @for (file of ticket.attachments; track file.id) {
+              <li>{{ file.originalName }} ({{ file.size }} bytes)</li>
+            } @empty {
+              <li class="text-muted">Nenhum anexo.</li>
+            }
+          </ul>
+          @if (ticket.status !== 'FECHADO') {
+            <input class="form-control" type="file" (change)="upload($event)">
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="mb-2"><strong>Categoria:</strong> {{ ticket.categoryName }}</div>
+          <div class="mb-2"><strong>Cliente:</strong> {{ ticket.clientName }}</div>
+          <div class="mb-2"><strong>Atendente:</strong> {{ ticket.assigneeName || 'Nao atribuido' }}</div>
+          <div class="mb-2"><strong>Aberto em:</strong> {{ ticket.createdAt | date:'short' }}</div>
+          @if (ticket.closedAt) {
+            <div class="mb-2"><strong>Fechado em:</strong> {{ ticket.closedAt | date:'short' }}</div>
+          }
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-header bg-white">Acoes</div>
+        <div class="card-body d-grid gap-2">
+          <input class="form-control form-control-sm" placeholder="Nota da transicao" [(ngModel)]="note" name="note">
+          @if (canAssign()) {
+            <button class="btn btn-primary" type="button" (click)="assign()">Assumir chamado</button>
+          }
+          @if (canResolve()) {
+            <button class="btn btn-success" type="button" (click)="changeStatus('RESOLVIDO')">Marcar como resolvido</button>
+          }
+          @if (canReopen()) {
+            <button class="btn btn-outline-primary" type="button" (click)="changeStatus('EM_ATENDIMENTO')">Reabrir atendimento</button>
+          }
+          @if (canClose()) {
+            <button class="btn btn-dark" type="button" (click)="changeStatus('FECHADO')">Fechar chamado</button>
+          }
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bg-white">Historico</div>
+        <ul class="list-group list-group-flush">
+          @for (item of ticket.history; track item.id) {
+            <li class="list-group-item">
+              <div class="small">{{ item.changedByName }}</div>
+              <div>{{ item.fromStatus ? statusLabel[item.fromStatus] : '-' }} -> {{ statusLabel[item.toStatus] }}</div>
+              @if (item.note) {
+                <div class="text-muted small">{{ item.note }}</div>
+              }
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+}

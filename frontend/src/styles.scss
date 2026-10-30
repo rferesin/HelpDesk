@@ -1,0 +1,67 @@
+:root {
+  --hd-navy: #0f2744;
+  --hd-navy-soft: #17375f;
+  --hd-accent: #1d6fbf;
+  --hd-bg: #f4f6f9;
+  --hd-border: #d7dee8;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: var(--hd-bg);
+  color: #1b2430;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+.navbar-brand {
+  letter-spacing: 0.4px;
+}
+
+.card {
+  border: 1px solid var(--hd-border);
+  box-shadow: 0 8px 24px rgba(15, 39, 68, 0.06);
+}
+
+.table thead th {
+  background: #eef3f8;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.status-chip {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.auth-wrap {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #0f2744 0%, #1d4f86 55%, #2b7bc4 100%);
+}
+
+.sidebar {
+  min-height: calc(100vh - 56px);
+  background: var(--hd-navy);
+}
+
+.sidebar a {
+  color: #d5e4f5;
+  display: block;
+  padding: 0.7rem 1rem;
+  border-radius: 0.4rem;
+}
+
+.sidebar a.active,
+.sidebar a:hover {
+  background: var(--hd-navy-soft);
+  color: #fff;
+}

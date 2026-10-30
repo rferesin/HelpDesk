@@ -1,0 +1,56 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4 mb-0">Chamados</h1>
+  @if (auth.hasRole('CLIENTE', 'ADMIN')) {
+    <a class="btn btn-primary" routerLink="/tickets/new">Novo chamado</a>
+  }
+</div>
+
+<div class="card mb-3">
+  <div class="card-body row g-2">
+    <div class="col-md-6">
+      <input class="form-control" placeholder="Buscar por titulo, cliente ou ID" [(ngModel)]="search" (ngModelChange)="apply()">
+    </div>
+    <div class="col-md-4">
+      <select class="form-select" [(ngModel)]="statusFilter" (ngModelChange)="apply()">
+        <option value="">Todos os status</option>
+        <option value="ABERTO">Aberto</option>
+        <option value="EM_ATENDIMENTO">Em atendimento</option>
+        <option value="RESOLVIDO">Resolvido</option>
+        <option value="FECHADO">Fechado</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Titulo</th>
+          <th>Categoria</th>
+          <th>Status</th>
+          <th>Prioridade</th>
+          <th>Cliente</th>
+          <th>Atendente</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (ticket of filtered; track ticket.id) {
+          <tr>
+            <td>{{ ticket.id }}</td>
+            <td><a [routerLink]="['/tickets', ticket.id]">{{ ticket.title }}</a></td>
+            <td>{{ ticket.categoryName }}</td>
+            <td><span class="status-chip" [class]="statusClass(ticket.status)">{{ statusLabel[ticket.status] }}</span></td>
+            <td>{{ priorityLabel[ticket.priority] }}</td>
+            <td>{{ ticket.clientName }}</td>
+            <td>{{ ticket.assigneeName || '-' }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="7" class="text-center text-muted py-4">Nenhum chamado encontrado.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
