@@ -1,0 +1,13 @@
+target/
+.idea/
+*.iml
+.mvn/
+uploads/
+uploads-test/
+node_modules/
+dist/
+.angular/
+coverage/
+*.log
+.DS_Store
+.env
